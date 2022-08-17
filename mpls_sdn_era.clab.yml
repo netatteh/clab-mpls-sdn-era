@@ -18,39 +18,92 @@ topology:
     pe1:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.11
+      exec:
+        - ip addr add 10.1.0.1/31 dev eth2
+        - ip addr add 10.1.0.7/30 dev eth3
+        - ip addr add 10.0.0.0/31 dev eth4
+        - ip addr add 10.0.0.2/31 dev eth5
     pe2:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.22
+      exec:
+        - ip addr add 10.1.0.3/31 dev eth1
+        - ip addr add 10.1.0.5/31 dev eth2
+        - ip addr add 10.0.0.1/31 dev eth3
+        - ip addr add 10.0.0.4/31 dev eth4
     pe3:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.33
+      exec:
+        - ip addr add 10.0.0.9/31 dev eth2
+        - ip addr add 10.0.0.12/31 dev eth3
+        - ip addr add 10.2.0.33/24 dev eth4
     pe4:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.44
+      exec:
+        - ip addr add 10.0.0.11/31 dev eth1
+        - ip addr add 10.0.0.13/31 dev eth2
+        - ip addr add 10.2.0.44/31 dev eth3
     p1:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.101
+      exec:
+        - ip addr add 10.0.0.3/31 dev eth2
+        - ip addr add 10.0.0.16/31 dev eth3
+        - ip addr add 10.0.0.6/31 dev eth4
+        - ip addr add 10.0.0.24/31 dev eth5
+        - ip addr add 10.0.0.20/31 dev eth6
+        - ip addr add 10.0.0.8/31 dev eth6
     p2:
       kind: crpd
       mgmt_ipv4: 172.100.101.102
+      exec:
+        - ip addr add 10.0.0.5/31 dev eth1
+        - ip addr add 10.0.0.18/31 dev eth2
+        - ip addr add 10.0.0.7/31 dev eth3
+        - ip addr add 10.0.0.25/31 dev eth4
+        - ip addr add 10.0.0.22/31 dev eth5
     rr1:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.201
+      exec:
+        - ip addr add 10.0.0.17/31 dev eth2
+        - ip addr add 10.0.0.14/31 dev eth3
+        - ip addr add 10.0.0.19/31 dev eth4
     rr2:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.202
+      exec:
+        - ip addr add 10.0.0.21/31 dev eth1
+        - ip addr add 10.0.0.15/31 dev eth2
+        - ip addr add 10.0.0.23/31 dev eth3
     ce1:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.151
+      exec:
+        - ip addr add 10.1.12.1/24 dev eth2
+        - ip addr add 10.1.0.0/31 dev eth3
+        - ip addr add 10.1.0.4/31 dev eth4
     ce2:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.152
+      exec:
+        - ip addr add 10.1.12.2/24 dev eth2
+        - ip addr add 10.1.0.6/31 dev eth3
+        - ip addr add 10.1.0.2/31 dev eth4
     br3:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.153
+      exec:
+        - ip addr add 10.2.0.3/24 dev eth2
+        - ip addr add 10.2.34.3/24 dev eth3
     br4:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.154
+      exec:
+        - ip addr add 10.2.0.4/24 dev eth2
+        - ip addr add 10.2.34.4/24 dev eth3
     h1:
       kind: linux
       mgmt_ipv4: 172.100.101.161

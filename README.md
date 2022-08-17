@@ -1,6 +1,6 @@
 # Containerlab topology for MPLS in the SDN Era
 
-Containerlab topology description used to deploy the example topology defined in book _MPLS in the SDN era_. The lab is built utilizing the Juniper cRPD image.
+Containerlab topology description used to deploy the example topology defined in book [MPLS in the SDN era](https://www.oreilly.com/library/view/mpls-in-the/9781491905449/). The lab is built utilizing the Juniper cRPD image.
 
 ## Prerequisites
 

@@ -24,6 +24,6 @@ Containerlab topology description used to deploy the example topology defined in
 
 5. When done, run `sudo make destroy`
 
-# Notes
+## Notes
 
 - The Makefile creates three Linux bridges to be used within the Containerlab topology. If the naming collides with your existing bridges, change the file accordingly.

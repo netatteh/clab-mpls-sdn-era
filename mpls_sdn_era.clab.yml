@@ -3,13 +3,12 @@
 name: "sdnera"
 
 mgmt:
-  network: "mpls_sdn_era"                     # management network name
-  ipv4_subnet: "172.100.101.0/24"       # ipv4 range
+  network: "mpls_sdn_era" # management network name
+  ipv4_subnet: "172.100.101.0/24" # ipv4 range
 
 topology:
-  defaults:
   kinds:
-    crpd:  # root/clab@123
+    crpd: # root/clab@123
       license: crpd_90d_license_20220817.txt
       image: hub.juniper.net/routing/crpd:19.4R1.10
     linux:
@@ -59,7 +58,7 @@ topology:
         - ip addr add 10.1.12.10/24 dev eth1
     h3:
       kind: linux
-      mgmt_ipv4: 172.100.101.161
+      mgmt_ipv4: 172.100.101.163
       exec:
         - ip addr add 10.2.34.30/24 dev eth1
     br-pe-bridge: # Needs to be manually created!
@@ -102,27 +101,26 @@ topology:
 
     # CORE LINK BETWEEN RRs
     # RR1 <> RR2
-    - endpoints: ["rr1:eth3", "rr2:eth2"] 
-    
+    - endpoints: ["rr1:eth3", "rr2:eth2"]
+
     # CE TO PE
     - endpoints: ["ce1:eth3", "pe1:eth2"]
     - endpoints: ["ce1:eth4", "pe2:eth2"]
     - endpoints: ["ce2:eth3", "pe1:eth3"]
-    - endpoints: ["ce2:eth4", "pe1:eth3"]
+    - endpoints: ["ce2:eth4", "pe2:eth1"]
 
     # BR TO PE
-    - endpoints: ["br3:eth2", "br-pe-bridge:eth1"]
-    - endpoints: ["br4:eth2", "br-pe-bridge:eth2"]
-    - endpoints: ["pe3:eth4", "br-pe-bridge:eth3"]
-    - endpoints: ["pe4:eth2", "br-pe-bridge:eth4"]
+    - endpoints: ["br3:eth2", "br-pe-bridge:br-pe-eth1"]
+    - endpoints: ["br4:eth2", "br-pe-bridge:br-pe-eth2"]
+    - endpoints: ["pe3:eth4", "br-pe-bridge:br-pe-eth3"]
+    - endpoints: ["pe4:eth3", "br-pe-bridge:br-pe-eth4"]
 
     # H1
-    - endpoints: ["h1:eth1", "h1-ce-bridge:eth1"]
-    - endpoints: ["ce1:eth2", "h1-ce-bridge:eth2"]
-    - endpoints: ["ce2:eth2", "h1-ce-bridge:eth3"]
+    - endpoints: ["h1:eth1", "h1-ce-bridge:h1-ce-eth1"]
+    - endpoints: ["ce1:eth2", "h1-ce-bridge:h1-ce-eth2"]
+    - endpoints: ["ce2:eth2", "h1-ce-bridge:h1-ce-eth3"]
 
     # H3
-    - endpoints: ["h3:eth1", "h3-br-bridge:eth1"]
-    - endpoints: ["br3:eth3", "h3-br-bridge:eth2"]
-    - endpoints: ["br3:eth3", "h3-br-bridge:eth3"]
-
+    - endpoints: ["h3:eth1", "h3-br-bridge:h3-br-eth1"]
+    - endpoints: ["br3:eth3", "h3-br-bridge:h3-br-eth2"]
+    - endpoints: ["br4:eth3", "h3-br-bridge:h3-br-eth3"]

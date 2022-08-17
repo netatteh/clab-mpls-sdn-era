@@ -7,6 +7,15 @@ mgmt:
   ipv4_subnet: "172.100.101.0/24" # ipv4 range
 
 topology:
+  defaults:
+    env:
+      USERNAME: "admin"
+      PASSWORD: "admin"
+    config:
+      vars:
+        core_asn: 65000
+        ent_asn: 65001
+        cp_asn: 65002
   kinds:
     crpd: # root/clab@123
       license: crpd_license.txt
@@ -19,69 +28,102 @@ topology:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.11
       exec:
+        - ip addr add 172.16.0.11/32 dev lo
         - ip addr add 10.1.0.1/31 dev eth2
         - ip addr add 10.1.0.7/30 dev eth3
         - ip addr add 10.0.0.0/31 dev eth4
         - ip addr add 10.0.0.2/31 dev eth5
+      config:
+        vars:
+          iso_addr: 49.0001.1721.0010.1011.00
     pe2:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.22
       exec:
+        - ip addr add 172.16.0.22/32 dev lo
         - ip addr add 10.1.0.3/31 dev eth1
         - ip addr add 10.1.0.5/31 dev eth2
         - ip addr add 10.0.0.1/31 dev eth3
         - ip addr add 10.0.0.4/31 dev eth4
+      config:
+        vars:
+          iso_addr: 49.0001.1721.0010.1022.00
     pe3:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.33
       exec:
+        - ip addr add 172.16.0.33/32 dev lo
         - ip addr add 10.0.0.9/31 dev eth2
         - ip addr add 10.0.0.12/31 dev eth3
         - ip addr add 10.2.0.33/24 dev eth4
+      config:
+        vars:
+          iso_addr: 49.0001.1721.0010.1033.00
     pe4:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.44
       exec:
+        - ip addr add 172.16.0.44/32 dev lo
         - ip addr add 10.0.0.11/31 dev eth1
         - ip addr add 10.0.0.13/31 dev eth2
         - ip addr add 10.2.0.44/31 dev eth3
+      config:
+        vars:
+          iso_addr: 49.0001.1721.0010.1044.00
     p1:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.101
       exec:
+        - ip addr add 172.16.0.1/32 dev lo
         - ip addr add 10.0.0.3/31 dev eth2
         - ip addr add 10.0.0.16/31 dev eth3
         - ip addr add 10.0.0.6/31 dev eth4
         - ip addr add 10.0.0.24/31 dev eth5
         - ip addr add 10.0.0.20/31 dev eth6
-        - ip addr add 10.0.0.8/31 dev eth6
+        - ip addr add 10.0.0.8/31 dev eth7
+      config:
+        vars:
+          iso_addr: 49.0001.1721.0010.1101.00
     p2:
       kind: crpd
       mgmt_ipv4: 172.100.101.102
       exec:
+        - ip addr add 172.16.0.2/32 dev lo
         - ip addr add 10.0.0.5/31 dev eth1
         - ip addr add 10.0.0.18/31 dev eth2
         - ip addr add 10.0.0.7/31 dev eth3
         - ip addr add 10.0.0.25/31 dev eth4
         - ip addr add 10.0.0.22/31 dev eth5
+      config:
+        vars:
+          iso_addr: 49.0001.1721.0010.1102.00
     rr1:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.201
       exec:
+        - ip addr add 172.16.0.201/32 dev lo
         - ip addr add 10.0.0.17/31 dev eth2
         - ip addr add 10.0.0.14/31 dev eth3
         - ip addr add 10.0.0.19/31 dev eth4
+      config:
+        vars:
+          iso_addr: 49.0001.1721.0010.1201.00
     rr2:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.202
       exec:
+        - ip addr add 172.16.0.202/32 dev lo
         - ip addr add 10.0.0.21/31 dev eth1
         - ip addr add 10.0.0.15/31 dev eth2
         - ip addr add 10.0.0.23/31 dev eth3
+      config:
+        vars:
+          iso_addr: 49.0001.1721.0010.1202.00
     ce1:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.151
       exec:
+        - ip addr add 192.168.10.1/32 dev lo
         - ip addr add 10.1.12.1/24 dev eth2
         - ip addr add 10.1.0.0/31 dev eth3
         - ip addr add 10.1.0.4/31 dev eth4
@@ -89,6 +131,7 @@ topology:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.152
       exec:
+        - ip addr add 192.168.10.2/32 dev lo
         - ip addr add 10.1.12.2/24 dev eth2
         - ip addr add 10.1.0.6/31 dev eth3
         - ip addr add 10.1.0.2/31 dev eth4
@@ -96,12 +139,14 @@ topology:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.153
       exec:
+        - ip addr add 192.168.20.3/32 dev lo
         - ip addr add 10.2.0.3/24 dev eth2
         - ip addr add 10.2.34.3/24 dev eth3
     br4:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.154
       exec:
+        - ip addr add 192.168.20.4/32 dev lo
         - ip addr add 10.2.0.4/24 dev eth2
         - ip addr add 10.2.34.4/24 dev eth3
     h1:
@@ -124,43 +169,77 @@ topology:
   links:
     # PE1 <> P1
     - endpoints: ["pe1:eth5", "p1:eth2"]
+      vars:
+        port: [eth5, eth2]
     # PE1 <> PE2
     - endpoints: ["pe1:eth4", "pe2:eth3"]
+      vars:
+        port: [eth4, eth3]
     # PE2 <> P2
     - endpoints: ["pe2:eth4", "p2:eth1"]
+      vars:
+        port: [eth4, eth1]
     # PE3 <> P1
     - endpoints: ["pe3:eth2", "p1:eth7"]
+      vars:
+        port: [eth2, eth7]
     # PE3 <> P4
     - endpoints: ["pe3:eth3", "pe4:eth2"]
+      vars:
+        port: [eth3, eth2]
     # PE4 <> P2
     - endpoints: ["pe4:eth1", "p2:eth6"]
+      vars:
+        port: [eth1, eth6]
 
     # P1 TO P2 CORE LINKS
     # P1 <> P2
     - endpoints: ["p1:eth5", "p2:eth4"]
+      vars:
+        port: [eth5, eth4]
     - endpoints: ["p1:eth4", "p2:eth3"]
+      vars:
+        port: [eth4, eth3]
 
     # Route Reflectors R1
     # RR1 <> P1
     - endpoints: ["rr1:eth2", "p1:eth3"]
+      vars:
+        port: [eth2, eth3]
 
     # RR1 <> P2
     - endpoints: ["rr1:eth4", "p2:eth2"]
+      vars:
+        port: [eth4, eth2]
     # Route Reflectors R2
     # RR2 <> P1
     - endpoints: ["rr2:eth1", "p1:eth6"]
+      vars:
+        port: [eth1, eth6]
     # RR2 <> P2
     - endpoints: ["rr2:eth3", "p2:eth5"]
+      vars:
+        port: [eth3, eth5]
 
     # CORE LINK BETWEEN RRs
     # RR1 <> RR2
     - endpoints: ["rr1:eth3", "rr2:eth2"]
+      vars:
+        port: [eth3, eth2]
 
     # CE TO PE
     - endpoints: ["ce1:eth3", "pe1:eth2"]
+      vars:
+        port: [eth3, eth2]
     - endpoints: ["ce1:eth4", "pe2:eth2"]
+      vars:
+        port: [eth4, eth2]
     - endpoints: ["ce2:eth3", "pe1:eth3"]
+      vars:
+        port: [eth3, eth3]
     - endpoints: ["ce2:eth4", "pe2:eth1"]
+      vars:
+        port: [eth4, eth1]
 
     # BR TO PE
     - endpoints: ["br3:eth2", "br-pe-bridge:br-pe-eth1"]

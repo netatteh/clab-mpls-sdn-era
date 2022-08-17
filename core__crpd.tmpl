@@ -1,0 +1,7 @@
+{{/* root/clab123 */}}
+set system root-authentication encrypted-password "$6$lB5c6$Zeud8c6IhCTE6hnZxXBl3ZMZTC2hOx9pxxYUWTHKW1oC32SATWLMH2EXarxWS5k685qMggUfFur1lq.o4p4cg1"
+set interfaces lo0 unit 0 family iso address {{ .iso_addr }}
+set protocols isis interface lo0.0
+{{- range $name, $link := .clab_links }}
+set protocols isis interface {{ $link.port }}
+{{- end }}

@@ -9,7 +9,7 @@ mgmt:
 topology:
   kinds:
     crpd: # root/clab@123
-      license: crpd_90d_license_20220817.txt
+      license: crpd_license.txt
       image: hub.juniper.net/routing/crpd:19.4R1.10
     linux:
       image: wbitt/network-multitool:latest

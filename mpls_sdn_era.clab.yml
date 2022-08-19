@@ -26,6 +26,7 @@ topology:
   nodes:
     pe1:
       kind: "crpd"
+      startup-config: startup_config/pe1.conf
       mgmt_ipv4: 172.100.101.11
       exec:
         - ip addr add 172.16.0.11/32 dev lo
@@ -38,6 +39,7 @@ topology:
           iso_addr: 49.0001.1721.0010.1011.00
     pe2:
       kind: "crpd"
+      startup-config: startup_config/pe2.conf
       mgmt_ipv4: 172.100.101.22
       exec:
         - ip addr add 172.16.0.22/32 dev lo
@@ -50,6 +52,7 @@ topology:
           iso_addr: 49.0001.1721.0010.1022.00
     pe3:
       kind: "crpd"
+      startup-config: startup_config/pe3.conf
       mgmt_ipv4: 172.100.101.33
       exec:
         - ip addr add 172.16.0.33/32 dev lo
@@ -61,6 +64,7 @@ topology:
           iso_addr: 49.0001.1721.0010.1033.00
     pe4:
       kind: "crpd"
+      startup-config: startup_config/pe4.conf
       mgmt_ipv4: 172.100.101.44
       exec:
         - ip addr add 172.16.0.44/32 dev lo
@@ -72,6 +76,7 @@ topology:
           iso_addr: 49.0001.1721.0010.1044.00
     p1:
       kind: "crpd"
+      startup-config: startup_config/p1.conf
       mgmt_ipv4: 172.100.101.101
       exec:
         - ip addr add 172.16.0.1/32 dev lo
@@ -86,6 +91,7 @@ topology:
           iso_addr: 49.0001.1721.0010.1101.00
     p2:
       kind: crpd
+      startup-config: startup_config/p2.conf
       mgmt_ipv4: 172.100.101.102
       exec:
         - ip addr add 172.16.0.2/32 dev lo
@@ -99,6 +105,7 @@ topology:
           iso_addr: 49.0001.1721.0010.1102.00
     rr1:
       kind: "crpd"
+      startup-config: startup_config/rr1.conf
       mgmt_ipv4: 172.100.101.201
       exec:
         - ip addr add 172.16.0.201/32 dev lo
@@ -110,6 +117,7 @@ topology:
           iso_addr: 49.0001.1721.0010.1201.00
     rr2:
       kind: "crpd"
+      startup-config: startup_config/rr2.conf
       mgmt_ipv4: 172.100.101.202
       exec:
         - ip addr add 172.16.0.202/32 dev lo
@@ -245,7 +253,11 @@ topology:
     - endpoints: ["br3:eth2", "br-pe-bridge:br-pe-eth1"]
     - endpoints: ["br4:eth2", "br-pe-bridge:br-pe-eth2"]
     - endpoints: ["pe3:eth4", "br-pe-bridge:br-pe-eth3"]
+      vars:
+        port: [eth4, br-pe-eth3]
     - endpoints: ["pe4:eth3", "br-pe-bridge:br-pe-eth4"]
+      vars:
+        port: [eth3, br-pe-eth4]
 
     # H1
     - endpoints: ["h1:eth1", "h1-ce-bridge:h1-ce-eth1"]

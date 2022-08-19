@@ -2,3 +2,4 @@ clab-sdnera/
 startup_config/
 crpd*license*.txt
 *.bak
+*.log

@@ -10,7 +10,10 @@ destroy:
 	brctl delbr h1-ce-bridge
 	brctl delbr h3-br-bridge
 
-startup:
-	python3 configure_lab.py pe1,pe2,pe3,pe4,p1,p2,rr1,rr2 core
+reconfigure:
+	containerlab deploy --reconfigure
 
-all: startup deploy
+startup:
+	/home/attehelenius/.venv/clab-mpls-sdn-era/bin/python3 configure_lab.py pe1,pe2,pe3,pe4,p1,p2,rr1,rr2 core
+
+all: deploy startup reconfigure

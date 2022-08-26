@@ -183,6 +183,7 @@ topology:
     - endpoints: ["pe1:eth4", "pe2:eth3"]
       vars:
         port: [eth4, eth3]
+        isis_metric: 100
     # PE2 <> P2
     - endpoints: ["pe2:eth4", "p2:eth1"]
       vars:
@@ -195,6 +196,7 @@ topology:
     - endpoints: ["pe3:eth3", "pe4:eth2"]
       vars:
         port: [eth3, eth2]
+        isis_metric: 100
     # PE4 <> P2
     - endpoints: ["pe4:eth1", "p2:eth6"]
       vars:

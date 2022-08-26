@@ -144,7 +144,6 @@ def main():
     filter_terms = [F(name=x) for x in device_full_names]
     filter_object = reduce(lambda f1, f2: f1 | f2, filter_terms)
     nr = initialize_nornir(lab_name="sdnera").filter(filter_object)
-    breakpoint()
     render_result = nr.run(
         task=render_config_template,
         fabric_yaml="mpls_sdn_era.clab.yml",

@@ -15,5 +15,6 @@ reconfigure:
 
 startup:
 	/home/attehelenius/.venv/clab-mpls-sdn-era/bin/python3 configure_lab.py pe1,pe2,pe3,pe4,p1,p2,rr1,rr2 core
+	/home/attehelenius/.venv/clab-mpls-sdn-era/bin/python3 configure_lab.py ce1,ce2,br1,br2 empty
 
 all: deploy startup reconfigure

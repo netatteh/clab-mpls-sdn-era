@@ -15,7 +15,9 @@ interfaces {
 protocols {
     isis {
         level 1 disable;
-        interface lo0.0;
+        interface lo.0 {
+            passive;
+        }
 {{- range $name, $link := .clab_links }}
     {{- if $link.isis_metric }}
         interface {{ $link.port }} {

@@ -17,20 +17,17 @@ routing-options {
 }
 
 policy-options {
-    policy-statement PL-eBGP-65001-CE1-OUT {
+{{- range $name, $link := $.clab_links }}
+    {{- if eq (index $.clab_nodes $link.clab_far.clab_node).type "ce" }}
+    policy-statement PL-eBGP-{{ $.ent_asn }}-{{ $link.clab_far.clab_node }}-OUT {
         term BGP {
             then {
-                metric 100;
+                metric {{ $link.bgp_metric }};
             }
         }
     }
-    policy-statement PL-eBGP-65001-CE2-OUT {
-        term BGP {
-            then {
-                metric 200;
-            }
-        }
-    }
+    {{- end }}
+{{- end }}
     policy-statement PL-iBGP-RR-OUT {
         term NHS {
             from family inet;
@@ -60,6 +57,19 @@ protocols {
 {{- range $name, $rr := $.route_reflectors }}
             neighbor {{ $rr }};
 {{- end }}
+        }
+        group eBGP-{{ $.ent_asn }} {
+            family inet {
+                unicast;
+            }
+            peer-as {{ $.ent_asn }};
+            {{- range $name, $link := .clab_links }}
+                {{- if eq (index $.clab_nodes $link.clab_far.clab_node).type "ce" }}
+            neighbor {{ ip $link.clab_far.clab_link_ip }} {
+                export PL-eBGP-{{ $.ent_asn }}-{{ $link.clab_far.clab_node }}-OUT;
+            }
+                {{- end }}
+            {{- end }}
         }
     }
     isis {

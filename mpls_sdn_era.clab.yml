@@ -148,6 +148,7 @@ topology:
           lo: 172.16.0.202
     ce1:
       kind: "crpd"
+      startup-config: startup_config/ce1.conf
       mgmt_ipv4: 172.100.101.151
       exec:
         - ip addr add 192.168.10.1/32 dev lo
@@ -159,6 +160,7 @@ topology:
           type: ce
     ce2:
       kind: "crpd"
+      startup-config: startup_config/ce2.conf
       mgmt_ipv4: 172.100.101.152
       exec:
         - ip addr add 192.168.10.2/32 dev lo
@@ -170,6 +172,7 @@ topology:
           type: ce
     br3:
       kind: "crpd"
+      startup-config: startup_config/br3.conf
       mgmt_ipv4: 172.100.101.153
       exec:
         - ip addr add 192.168.20.3/32 dev lo
@@ -180,6 +183,7 @@ topology:
           type: br
     br4:
       kind: "crpd"
+      startup-config: startup_config/br4.conf
       mgmt_ipv4: 172.100.101.154
       exec:
         - ip addr add 192.168.20.4/32 dev lo
@@ -272,15 +276,27 @@ topology:
     - endpoints: ["ce1:eth3", "pe1:eth2"]
       vars:
         port: [eth3, eth2]
+        clab_link_ip: 10.1.0.0/31
+        bgp_metric: 100
+        bgp: true
     - endpoints: ["ce1:eth4", "pe2:eth2"]
       vars:
         port: [eth4, eth2]
+        clab_link_ip: 10.1.0.4/31
+        bgp_metric: 100
+        bgp: true
     - endpoints: ["ce2:eth3", "pe1:eth3"]
       vars:
         port: [eth3, eth3]
+        clab_link_ip: 10.1.0.6/31
+        bgp_metric: 200
+        bgp: true
     - endpoints: ["ce2:eth4", "pe2:eth1"]
       vars:
         port: [eth4, eth1]
+        clab_link_ip: 10.1.0.2/31
+        bgp_metric: 200
+        bgp: true
 
     # BR TO PE
     - endpoints: ["br3:eth2", "br-pe-bridge:br-pe-eth1"]

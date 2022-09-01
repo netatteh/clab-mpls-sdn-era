@@ -16,6 +16,8 @@ topology:
         core_asn: 65000
         ent_asn: 65001
         cp_asn: 65002
+        route_reflectors: [172.16.0.201, 172.16.0.202]
+        rr_cluster_id: 172.16.0.201
   kinds:
     crpd: # root/clab@123
       license: crpd_license.txt
@@ -36,7 +38,9 @@ topology:
         - ip addr add 10.0.0.2/31 dev eth5
       config:
         vars:
+          type: pe
           iso_addr: 49.0001.1721.0010.1011.00
+          lo: 172.16.0.11
     pe2:
       kind: "crpd"
       startup-config: startup_config/pe2.conf
@@ -49,7 +53,9 @@ topology:
         - ip addr add 10.0.0.4/31 dev eth4
       config:
         vars:
+          type: pe
           iso_addr: 49.0001.1721.0010.1022.00
+          lo: 172.16.0.22
     pe3:
       kind: "crpd"
       startup-config: startup_config/pe3.conf
@@ -61,7 +67,9 @@ topology:
         - ip addr add 10.2.0.33/24 dev eth4
       config:
         vars:
+          type: pe
           iso_addr: 49.0001.1721.0010.1033.00
+          lo: 172.16.0.33
     pe4:
       kind: "crpd"
       startup-config: startup_config/pe4.conf
@@ -73,7 +81,9 @@ topology:
         - ip addr add 10.2.0.44/31 dev eth3
       config:
         vars:
+          type: pe
           iso_addr: 49.0001.1721.0010.1044.00
+          lo: 172.16.0.44
     p1:
       kind: "crpd"
       startup-config: startup_config/p1.conf
@@ -88,7 +98,9 @@ topology:
         - ip addr add 10.0.0.8/31 dev eth7
       config:
         vars:
+          type: p
           iso_addr: 49.0001.1721.0010.1101.00
+          lo: 172.16.0.1
     p2:
       kind: crpd
       startup-config: startup_config/p2.conf
@@ -103,7 +115,9 @@ topology:
         - ip addr add 10.0.0.10/31 dev eth6
       config:
         vars:
+          type: p
           iso_addr: 49.0001.1721.0010.1102.00
+          lo: 172.16.0.2
     rr1:
       kind: "crpd"
       startup-config: startup_config/rr1.conf
@@ -115,7 +129,9 @@ topology:
         - ip addr add 10.0.0.19/31 dev eth4
       config:
         vars:
+          type: rr
           iso_addr: 49.0001.1721.0010.1201.00
+          lo: 172.16.0.201
     rr2:
       kind: "crpd"
       startup-config: startup_config/rr2.conf
@@ -127,7 +143,9 @@ topology:
         - ip addr add 10.0.0.23/31 dev eth3
       config:
         vars:
+          type: rr
           iso_addr: 49.0001.1721.0010.1202.00
+          lo: 172.16.0.202
     ce1:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.151
@@ -136,6 +154,9 @@ topology:
         - ip addr add 10.1.12.1/24 dev eth2
         - ip addr add 10.1.0.0/31 dev eth3
         - ip addr add 10.1.0.4/31 dev eth4
+      config:
+        vars:
+          type: ce
     ce2:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.152
@@ -144,6 +165,9 @@ topology:
         - ip addr add 10.1.12.2/24 dev eth2
         - ip addr add 10.1.0.6/31 dev eth3
         - ip addr add 10.1.0.2/31 dev eth4
+      config:
+        vars:
+          type: ce
     br3:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.153
@@ -151,6 +175,9 @@ topology:
         - ip addr add 192.168.20.3/32 dev lo
         - ip addr add 10.2.0.3/24 dev eth2
         - ip addr add 10.2.34.3/24 dev eth3
+      config:
+        vars:
+          type: br
     br4:
       kind: "crpd"
       mgmt_ipv4: 172.100.101.154
@@ -158,6 +185,9 @@ topology:
         - ip addr add 192.168.20.4/32 dev lo
         - ip addr add 10.2.0.4/24 dev eth2
         - ip addr add 10.2.34.4/24 dev eth3
+      config:
+        vars:
+          type: br
     h1:
       kind: linux
       mgmt_ipv4: 172.100.101.161

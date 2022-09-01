@@ -1,0 +1,56 @@
+system {
+    root-authentication {
+        encrypted-password "$6$lB5c6$Zeud8c6IhCTE6hnZxXBl3ZMZTC2hOx9pxxYUWTHKW1oC32SATWLMH2EXarxWS5k685qMggUfFur1lq.o4p4cg1"; ## SECRET-DATA
+    }
+}
+interfaces {
+    lo0 {
+        unit 0 {
+            family iso {
+                address {{ .iso_addr }};
+            }
+        }
+    }
+}
+routing-options {
+    autonomous-system {{ $.core_asn }};
+}
+protocols {
+    isis {
+        level 1 disable;
+        interface lo.0 {
+            passive;
+        }
+{{- range $name, $link := .clab_links }}
+    {{- if $link.isis_metric }}
+        interface {{ $link.port }} {
+            level 2 metric {{ $link.isis_metric }};
+        }
+    {{- else }}
+        interface {{ $link.port }};
+    {{- end }}
+{{- end }}
+    }
+    bgp {
+        group iBGP-CLIENTS {
+            type internal;
+            cluster {{ $.rr_cluster_id }};
+            local-address {{ .lo }};
+            family inet {
+                unicast {
+                    add-path {
+                        receive;
+                        send {
+                            path-count 6;
+                        }
+                    }
+                }
+            }
+{{- range $name, $peer := .clab_nodes }}
+    {{- if eq $peer.type "pe" }}
+            neighbor {{ $peer.lo }};
+    {{- end }}
+{{- end }}
+        }
+    }
+}

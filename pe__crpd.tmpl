@@ -1,0 +1,80 @@
+system {
+    root-authentication {
+        encrypted-password "$6$lB5c6$Zeud8c6IhCTE6hnZxXBl3ZMZTC2hOx9pxxYUWTHKW1oC32SATWLMH2EXarxWS5k685qMggUfFur1lq.o4p4cg1"; ## SECRET-DATA
+    }
+}
+interfaces {
+    lo0 {
+        unit 0 {
+            family iso {
+                address {{ .iso_addr }};
+            }
+        }
+    }
+}
+routing-options {
+    autonomous-system {{ $.core_asn }};
+}
+
+policy-options {
+    policy-statement PL-eBGP-65001-CE1-OUT {
+        term BGP {
+            then {
+                metric 100;
+            }
+        }
+    }
+    policy-statement PL-eBGP-65001-CE2-OUT {
+        term BGP {
+            then {
+                metric 200;
+            }
+        }
+    }
+    policy-statement PL-iBGP-RR-OUT {
+        term NHS {
+            from family inet;
+            then {
+                next-hop self;
+            }
+        }
+    }
+}
+
+protocols {
+    bgp {
+        group iBGP-RR {
+            type internal;
+            local-address {{ .lo }};
+            family inet {
+                unicast {
+                    add-path {
+                        receive;
+                        send {
+                            path-count 6;
+                        }
+                    }
+                }
+            }
+            export PL-iBGP-RR-OUT;      
+{{- range $name, $rr := $.route_reflectors }}
+            neighbor {{ $rr }};
+{{- end }}
+        }
+    }
+    isis {
+        level 1 disable;
+        interface lo.0 {
+            passive;
+        }
+{{- range $name, $link := .clab_links }}
+    {{- if $link.isis_metric }}
+        interface {{ $link.port }} {
+            level 2 metric {{ $link.isis_metric }};
+        }
+    {{- else }}
+        interface {{ $link.port }};
+    {{- end }}
+{{- end }}
+    }
+}

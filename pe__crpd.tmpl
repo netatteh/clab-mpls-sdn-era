@@ -17,7 +17,7 @@ routing-options {
 }
 
 policy-options {
-{{- range $name, $link := $.clab_links }}
+{{- range $name, $link := .clab_links }}
     {{- if eq (index $.clab_nodes $link.clab_far.clab_node).type "ce" }}
     policy-statement PL-eBGP-{{ $.ent_asn }}-{{ $link.clab_far.clab_node }}-OUT {
         term BGP {
@@ -58,19 +58,34 @@ protocols {
             neighbor {{ $rr }};
 {{- end }}
         }
+{{- if or (eq .clab_node "pe1") (eq .clab_node "pe2") }}
         group eBGP-{{ $.ent_asn }} {
             family inet {
                 unicast;
             }
             peer-as {{ $.ent_asn }};
-            {{- range $name, $link := .clab_links }}
-                {{- if eq (index $.clab_nodes $link.clab_far.clab_node).type "ce" }}
+    {{- range $name, $link := .clab_links }}
+        {{- if eq (index $.clab_nodes $link.clab_far.clab_node).type "ce" }}
             neighbor {{ ip $link.clab_far.clab_link_ip }} {
                 export PL-eBGP-{{ $.ent_asn }}-{{ $link.clab_far.clab_node }}-OUT;
             }
-                {{- end }}
-            {{- end }}
+        {{- end }}
+    {{- end }}
         }
+{{- end }}
+{{- if or (eq .clab_node "pe3") (eq .clab_node "pe4") }}
+        group eBGP-{{ $.cp_asn }} {
+            family inet {
+                unicast;
+            }
+            peer-as {{ $.cp_asn }};
+    {{- range $name, $link := .clab_links }}
+        {{- if eq (index $.clab_nodes $link.clab_far.clab_node).type "br-pe-l2" }}
+            neighbor {{ ip $link.clab_far.br_ip }};
+        {{- end }}
+    {{- end }}
+        }
+{{- end }}
     }
     isis {
         level 1 disable;

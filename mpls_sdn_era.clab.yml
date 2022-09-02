@@ -204,6 +204,9 @@ topology:
         - ip addr add 10.2.34.30/24 dev eth1
     br-pe-bridge: # Needs to be manually created!
       kind: bridge
+      config:
+        vars:
+          type: br-pe-l2
     h1-ce-bridge: # Needs to be manually created!
       kind: bridge
     h3-br-bridge: # Needs to be manually created!
@@ -300,13 +303,19 @@ topology:
 
     # BR TO PE
     - endpoints: ["br3:eth2", "br-pe-bridge:br-pe-eth1"]
+      vars:
+        pe_ip: 10.2.0.33/24
     - endpoints: ["br4:eth2", "br-pe-bridge:br-pe-eth2"]
+      vars:
+        pe_ip: 10.2.0.44/24
     - endpoints: ["pe3:eth4", "br-pe-bridge:br-pe-eth3"]
       vars:
         port: [eth4, br-pe-eth3]
+        br_ip: 10.2.0.3/24
     - endpoints: ["pe4:eth3", "br-pe-bridge:br-pe-eth4"]
       vars:
         port: [eth3, br-pe-eth4]
+        br_ip: 10.2.0.4/24
 
     # H1
     - endpoints: ["h1:eth1", "h1-ce-bridge:h1-ce-eth1"]

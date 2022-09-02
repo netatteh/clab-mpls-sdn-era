@@ -1,0 +1,24 @@
+system {
+    root-authentication {
+        encrypted-password "$6$lB5c6$Zeud8c6IhCTE6hnZxXBl3ZMZTC2hOx9pxxYUWTHKW1oC32SATWLMH2EXarxWS5k685qMggUfFur1lq.o4p4cg1"; ## SECRET-DATA
+    }
+}
+routing-options {
+    autonomous-system {{ $.cp_asn }};
+}
+
+protocols {
+    bgp {
+        group eBGP-{{ $.core_asn }} {
+            family inet {
+                unicast;
+            }
+            peer-as {{ $.core_asn }};
+            {{- range $name, $link := .clab_links }}
+                {{- if eq (index $.clab_nodes $link.clab_far.clab_node).type "br-pe-l2" }}
+                    neighbor {{ ip $link.clab_far.pe_ip }};
+                {{- end }}
+            {{- end }}
+        }
+    }
+}

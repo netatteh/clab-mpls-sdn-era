@@ -7,6 +7,14 @@ routing-options {
     autonomous-system {{ $.cp_asn }};
 }
 
+policy-options {
+    policy-statement PL-eBGP-{{ $.core_asn }}-OUT
+        term DIRECT {
+            from protocol direct;
+            then accept;
+        }    
+}
+
 protocols {
     bgp {
         group eBGP-{{ $.core_asn }} {
@@ -14,9 +22,10 @@ protocols {
                 unicast;
             }
             peer-as {{ $.core_asn }};
+            export PL-eBGP-{{ $.core_asn }}-OUT;
             {{- range $name, $link := .clab_links }}
                 {{- if eq (index $.clab_nodes $link.clab_far.clab_node).type "br-pe-l2" }}
-                    neighbor {{ ip $link.clab_far.pe_ip }};
+            neighbor {{ ip $link.clab_far.pe_ip }};
                 {{- end }}
             {{- end }}
         }

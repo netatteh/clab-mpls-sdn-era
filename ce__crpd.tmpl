@@ -16,6 +16,10 @@ policy-options {
                 metric {{ $link.bgp_metric }};
             }
         }
+        term DIRECT {
+            from protocol direct;
+            then accept;
+        }    
     }
     {{- end }}
 {{- end }}

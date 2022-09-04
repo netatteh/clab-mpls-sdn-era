@@ -35,7 +35,7 @@ protocols {
     bgp {
         group iBGP-CLIENTS {
             type internal;
-            cluster {{ $.rr_cluster_id }};
+            cluster {{ .lo }};
             local-address {{ .lo }};
             family inet {
                 unicast {

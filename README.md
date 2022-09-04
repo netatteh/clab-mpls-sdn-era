@@ -27,3 +27,4 @@ Containerlab topology description used to deploy the example topology defined in
 ## Notes
 
 - The Makefile creates three Linux bridges to be used within the Containerlab topology. If the naming collides with your existing bridges, change the file accordingly.
+- The 19.X software does not support MPLS features such as LDP, and therefore is not usable in this lab.

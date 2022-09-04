@@ -1,0 +1,46 @@
+system {
+    root-authentication {
+        encrypted-password "$6$lB5c6$Zeud8c6IhCTE6hnZxXBl3ZMZTC2hOx9pxxYUWTHKW1oC32SATWLMH2EXarxWS5k685qMggUfFur1lq.o4p4cg1"; ## SECRET-DATA
+    }
+}
+interfaces {
+    lo0 {
+        unit 0 {
+            family iso {
+                address {{ .iso_addr }};
+            }
+        }
+    }
+}
+protocols {
+    isis {
+        level 1 disable;
+        interface lo.0 {
+            passive;
+        }
+{{- range $name, $link := .clab_links }}
+    {{- if $link.isis_metric }}
+        interface {{ $link.port }} {
+            level 2 metric {{ $link.isis_metric }};
+        }
+    {{- else }}
+        interface {{ $link.port }};
+    {{- end }}
+{{- end }}
+    }
+    mpls {
+{{- range $name, $link := .clab_links }}
+    {{- if $link.mpls }}
+        interface {{ $link.port }};
+    {{- end }}
+{{- end }}
+    }
+    ldp {
+        track-igp-metric;
+{{- range $name, $link := .clab_links }}
+    {{- if $link.mpls }}
+        interface {{ $link.port }};
+    {{- end }}
+{{- end }}
+    }
+}

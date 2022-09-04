@@ -17,7 +17,6 @@ topology:
         ent_asn: 65001
         cp_asn: 65002
         route_reflectors: [172.16.0.201, 172.16.0.202]
-        rr_cluster_id: 172.16.0.201
   kinds:
     crpd: # root/clab@123
       license: crpd_license.txt
@@ -217,37 +216,45 @@ topology:
     - endpoints: ["pe1:eth5", "p1:eth2"]
       vars:
         port: [eth5, eth2]
+        mpls: true
     # PE1 <> PE2
     - endpoints: ["pe1:eth4", "pe2:eth3"]
       vars:
         port: [eth4, eth3]
         isis_metric: 100
+        mpls: true
     # PE2 <> P2
     - endpoints: ["pe2:eth4", "p2:eth1"]
       vars:
         port: [eth4, eth1]
+        mpls: true
     # PE3 <> P1
     - endpoints: ["pe3:eth2", "p1:eth7"]
       vars:
         port: [eth2, eth7]
+        mpls: true
     # PE3 <> P4
     - endpoints: ["pe3:eth3", "pe4:eth2"]
       vars:
         port: [eth3, eth2]
         isis_metric: 100
+        mpls: true
     # PE4 <> P2
     - endpoints: ["pe4:eth1", "p2:eth6"]
       vars:
         port: [eth1, eth6]
+        mpls: true
 
     # P1 TO P2 CORE LINKS
     # P1 <> P2
     - endpoints: ["p1:eth5", "p2:eth4"]
       vars:
         port: [eth5, eth4]
+        mpls: true
     - endpoints: ["p1:eth4", "p2:eth3"]
       vars:
         port: [eth4, eth3]
+        mpls: true
 
     # Route Reflectors R1
     # RR1 <> P1

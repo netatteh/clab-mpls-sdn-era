@@ -102,4 +102,19 @@ protocols {
     {{- end }}
 {{- end }}
     }
+    mpls {
+{{- range $name, $link := .clab_links }}
+    {{- if $link.mpls }}
+        interface {{ $link.port }};
+    {{- end }}
+{{- end }}
+    }
+    ldp {
+        track-igp-metric;
+{{- range $name, $link := .clab_links }}
+    {{- if $link.mpls }}
+        interface {{ $link.port }};
+    {{- end }}
+{{- end }}
+    }
 }

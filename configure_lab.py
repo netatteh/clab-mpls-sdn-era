@@ -93,7 +93,7 @@ def render_config_template(task: Task, fabric_yaml: str, template_prefix) -> Res
     command_str = (
         "containerlab config -t "
         + fabric_yaml
-        + " template -p . -l "
+        + " template -p ./templates -l "
         + template_prefix
         + " -f "
         + hostname

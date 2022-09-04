@@ -4,13 +4,27 @@ Containerlab topology description used to deploy the example topology defined in
 
 ## Prerequisites
 
-- License for cRPD. At the time of this writing, a 90 day trial license is available through Juniper support.
+- License  and software image for cRPD. At the time of this writing, a 90 day trial license is available through Juniper support.
 
 - Working [Containerlab](https://containerlab.dev) environment with Sudo access
+
+- Python >3.6
 
 ## Installation
 
 1. Clone this repository
+
+2. Create and activate a new Python virtual environment to your desired location
+
+```bash
+python -m venv ~/.venv/clab-mpls-sdn-era
+source ~/.venv/clab-mpls-sdn-era/bin/activate
+```
+3. Change directory in the repository folder and install the required dependencies
+
+```bash
+pip install -r requirements.txt
+```
 
 2. If using the evaluation cRPD image, download the .tgz package and load the image to your Docker environment
 
@@ -20,7 +34,7 @@ Containerlab topology description used to deploy the example topology defined in
 
 3. Retrieve the cRPD license file from Juniper, and copy it to the base directory named as `crpd_license.txt`
 
-4. Run `sudo make deploy`
+4. Run `sudo make all`
 
 5. When done, run `sudo make destroy`
 

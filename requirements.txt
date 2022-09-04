@@ -1,0 +1,16 @@
+black==22.6.0
+click==8.1.3
+colorama==0.4.5
+importlib-metadata==4.12.0
+mypy-extensions==0.4.3
+nornir==3.3.0
+nornir-ansible==2022.7.30
+nornir-utils==0.2.0
+pathspec==0.9.0
+platformdirs==2.5.2
+PyYAML==6.0
+ruamel.yaml==0.17.21
+ruamel.yaml.clib==0.2.6
+tomli==2.0.1
+typing-extensions==4.3.0
+zipp==3.8.1

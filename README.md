@@ -26,17 +26,17 @@ source ~/.venv/clab-mpls-sdn-era/bin/activate
 pip install -r requirements.txt
 ```
 
-2. If using the evaluation cRPD image, download the .tgz package and load the image to your Docker environment
+4. If using the evaluation cRPD image, download the .tgz package and load the image to your Docker environment
 
  ```bash
  docker load -i junos-routing-crpd-docker-19.4R1.10.tgz
  ```
 
-3. Retrieve the cRPD license file from Juniper, and copy it to the base directory named as `crpd_license.txt`
+5. Retrieve the cRPD license file from Juniper, and copy it to the base directory named as `crpd_license.txt`
 
-4. Run `sudo make all`
+6. Run `sudo make all`
 
-5. When done, run `sudo make destroy`
+7. When done, run `sudo make destroy`
 
 ## Notes
 

@@ -13,12 +13,14 @@ import re
 import argparse
 from functools import reduce
 import shlex
+import shutil
 
 from nornir import InitNornir
 from nornir.core import Nornir
 from nornir.core.task import Result, Task
 from nornir.core.filter import F
 from nornir_utils.plugins.functions import print_result
+from nornir_netmiko import netmiko_send_command
 
 
 def remove_string_prefix(string: str, prefix: str) -> str:
@@ -120,6 +122,33 @@ def configure_devices(task: Task, lab_name: str) -> Result:
     return Result(host=task.host, message="Configuration completed successfully")
 
 
+def install_license(task: Task, lab_name: str, license_file: str) -> Result:
+    """Install cRPD license to the host
+
+    Copies the license file given as parameter to the correct host directory
+    and installs the license using a CLI command. This in needed due to new
+    cRPD versions not being compatible with the Containerlab in-built license
+    installation functionality.
+
+    Args:
+        task: A Nornir task object
+        lab_name: The lab name as defined in the 'name' key of the topology file
+        license_file: A path to the license file
+
+    Returns:
+        A Nornir MultiResult object
+    """
+    lab_prefix = f"clab-{lab_name}-"
+    host_short_name = remove_string_prefix(task.host.name, lab_prefix)
+    license_location = "/config/license/safenet/junos_sfnt.lic"
+    target = f"./clab-{lab_name}/{host_short_name}{license_location}"
+    shutil.copyfile(license_file, target)
+    license_cmd = f"request system license add ..{license_location}"
+    result = task.run(netmiko_send_command, command_string=license_cmd)
+
+    return Result(host=task.host, message="License installed")
+
+
 def parse_cmd_args():
     parser = argparse.ArgumentParser(description="Containerlab config script")
     parser.add_argument(
@@ -131,6 +160,11 @@ def parse_cmd_args():
         "template_prefix",
         type=str,
         help="The prefix string indicating the template used for config generation",
+    )
+    parser.add_argument(
+        "--license",
+        type=str,
+        help="Path to the license file that will be installed. Defining this excludes the startup config generation.",
     )
 
     return parser.parse_args()
@@ -149,8 +183,16 @@ def main():
         fabric_yaml="mpls_sdn_era.clab.yml",
         template_prefix=args.template_prefix,
     )
-    print_result(render_result, vars=["message"])
-    print_result(nr.run(configure_devices, lab_name=lab_name), vars=["message"])
+    if args.license:
+        print_result(
+            nr.run(
+                install_license, lab_name=lab_name, license_file="./crpd_license.txt"
+            ),
+            vars=["message"],
+        )
+    else:
+        print_result(render_result, vars=["message"])
+        print_result(nr.run(configure_devices, lab_name=lab_name), vars=["message"])
 
 
 if __name__ == "__main__":

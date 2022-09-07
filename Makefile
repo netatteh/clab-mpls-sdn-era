@@ -19,6 +19,9 @@ destroy:
 reconfigure:
 	containerlab deploy --reconfigure
 
+license:
+	/home/attehelenius/.venv/clab-mpls-sdn-era/bin/python3 configure_lab.py pe1,pe2,pe3,pe4,rr1,rr2,p1,p2,ce1,ce2,br3,br4 pe --license ./crpd_license.txt
+
 startup:
 	/home/attehelenius/.venv/clab-mpls-sdn-era/bin/python3 configure_lab.py pe1,pe2,pe3,pe4 pe
 	/home/attehelenius/.venv/clab-mpls-sdn-era/bin/python3 configure_lab.py rr1,rr2 rr
@@ -26,4 +29,4 @@ startup:
 	/home/attehelenius/.venv/clab-mpls-sdn-era/bin/python3 configure_lab.py ce1,ce2 ce
 	/home/attehelenius/.venv/clab-mpls-sdn-era/bin/python3 configure_lab.py br3,br4 br
 
-all: deploy startup reconfigure
+all: deploy startup reconfigure license

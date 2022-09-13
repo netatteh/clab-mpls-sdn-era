@@ -12,6 +12,19 @@ interfaces {
         }
     }
 }
+routing-options {
+    forwarding-table {
+        export PL-LB;
+    }
+}
+
+policy-options {
+    policy-statement PL-LB {
+        then {
+            load-balance per-packet;
+        }
+    }
+}
 protocols {
     isis {
         level 1 disable;
@@ -22,13 +35,18 @@ protocols {
     {{- if $link.isis_metric }}
         interface {{ $link.port }} {
             level 2 metric {{ $link.isis_metric }};
+            ldp-synchronization;
         }
     {{- else }}
-        interface {{ $link.port }};
+        interface {{ $link.port }} {
+            ldp-synchronization;
+        }
+
     {{- end }}
 {{- end }}
     }
     mpls {
+        icmp-tunneling;
 {{- range $name, $link := .clab_links }}
     {{- if $link.mpls }}
         interface {{ $link.port }};
@@ -37,6 +55,7 @@ protocols {
     }
     ldp {
         track-igp-metric;
+        session-protection;
 {{- range $name, $link := .clab_links }}
     {{- if $link.mpls }}
         interface {{ $link.port }};

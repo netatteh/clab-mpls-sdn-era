@@ -14,9 +14,17 @@ interfaces {
 }
 routing-options {
     autonomous-system {{ $.core_asn }};
+    forwarding-table {
+        export PL-LB;
+    }
 }
 
 policy-options {
+    policy-statement PL-LB {
+        then {
+            load-balance per-packet;
+        }
+    }
 {{- range $name, $link := .clab_links }}
     {{- if eq (index $.clab_nodes $link.clab_far.clab_node).type "ce" }}
     policy-statement PL-eBGP-{{ $.ent_asn }}-{{ $link.clab_far.clab_node }}-OUT {
@@ -96,13 +104,17 @@ protocols {
     {{- if $link.isis_metric }}
         interface {{ $link.port }} {
             level 2 metric {{ $link.isis_metric }};
+            ldp-synchronization;
         }
     {{- else }}
-        interface {{ $link.port }};
+        interface {{ $link.port }} {
+            ldp-synchronization;
+        }
     {{- end }}
 {{- end }}
     }
     mpls {
+        icmp-tunneling;
 {{- range $name, $link := .clab_links }}
     {{- if $link.mpls }}
         interface {{ $link.port }};
@@ -111,6 +123,7 @@ protocols {
     }
     ldp {
         track-igp-metric;
+        session-protection;
 {{- range $name, $link := .clab_links }}
     {{- if $link.mpls }}
         interface {{ $link.port }};
